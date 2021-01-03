@@ -1,0 +1,28 @@
+.App-header {
+    background-color: #282c34;
+    min-height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    font-size: calc(10px + 2vmin);
+    color: white;
+}
+
+.App-logo {
+    height: 40px;
+    pointer-events: none;
+}
+
+.App-title {
+    font-weight: bold;
+    /*居中*/
+    flex: 1;
+    font-size: 17px;
+    color: #61dafb;
+    text-align: left;
+}
+
+.logout {
+    font-size: 25px;
+    padding-right: 20px;
+}
