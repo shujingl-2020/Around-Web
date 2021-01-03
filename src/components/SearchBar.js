@@ -1,13 +1,16 @@
 import React, {useState} from 'react';
 import {Input, Radio} from 'antd';
+import {SEARCH_KEY} from "../constants";
 
 const {Search} = Input;
 
 function SearchBar(props) {
     const onSearch = value => console.log(value);
-    const [searchType, setSearchType] = useState("all");
+    const [searchType, setSearchType] = useState(SEARCH_KEY.all);
+    const [error, setError] = useState(null);
 
     const changeSearchType = e => {
+        // e is event object
         const searchType = e.target.value;
         console.log(searchType);
         setSearchType(searchType);
@@ -23,11 +26,14 @@ function SearchBar(props) {
                 onSearch={onSearch}
             />
 
+            <p className="error-msg">
+                {error}
+            </p>
+
             <Radio.Group onChange={changeSearchType} value={searchType}>
-                <Radio value={1}>A</Radio>
-                <Radio value={2}>B</Radio>
-                <Radio value={3}>C</Radio>
-                <Radio value={4}>D</Radio>
+                <Radio value={SEARCH_KEY.all}>All</Radio>
+                <Radio value={SEARCH_KEY.keyword}>Keyword</Radio>
+                <Radio value={SEARCH_KEY.user}>User</Radio>
             </Radio.Group>
         </div>
     );
