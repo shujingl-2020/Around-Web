@@ -9,11 +9,24 @@ function SearchBar(props) {
     const [searchType, setSearchType] = useState(SEARCH_KEY.all);
     const [error, setError] = useState(null);
 
+    const handleSearch = value => {
+        console.log("value => ", value);
+        // casw1: error
+        if (value === "" && searchType !== SEARCH_KEY.all) {
+            setError("Please input your search keyword")
+            return;
+        }
+
+        // case2: do search
+
+    }
+
     const changeSearchType = e => {
         // e is event object
         const searchType = e.target.value;
         console.log(searchType);
         setSearchType(searchType);
+        setError(null);
     }
 
     return (
@@ -23,7 +36,8 @@ function SearchBar(props) {
                 allowClear
                 enterButton="Search"
                 size="large"
-                onSearch={onSearch}
+                disabled={searchType === SEARCH_KEY.all}
+                onSearch={handleSearch}
             />
 
             <p className="error-msg">
