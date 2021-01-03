@@ -4,8 +4,10 @@ import {Tabs, message, Row, Col} from 'antd';
 import {SEARCH_KEY, BASE_URL, TOKEN_KEY} from "../constants";
 import axios from 'axios';
 import PhotoGallery from "./PhotoGallery";
+import CreatePostButton from "./CreatePostButton";
 
 const {TabPane} = Tabs;
+
 
 function Home(props) {
     const [activeTab, setActiveTab] = useState('image');
@@ -18,10 +20,12 @@ function Home(props) {
 
 
     // fetch data during updating state
+    // if the second argument is [], this will be equivalent to didmount
     useEffect(() => {
         console.log('in effect', searchOption);
         fetchPost(searchOption);
     }, [searchOption]);
+
 
     const fetchPost = option => {
         const {type, keyword} = option;
@@ -29,7 +33,7 @@ function Home(props) {
 
         if (type === SEARCH_KEY.all) {
             url = `${BASE_URL}/search`;
-        } else if (type === SEARCH_KEY.keyword) {
+        } else if (type === SEARCH_KEY.user) {
             url = `${BASE_URL}/search?user=${keyword}`;
         } else {
             url = `${BASE_URL}/search?keywords=${keyword}`;
@@ -102,11 +106,34 @@ function Home(props) {
         }
     }
 
+    //value => {type, keyword}
+    const handleSearch = (value) => {
+        console.log('home', value);
+        const {type, keyword} = value;
+        //everytime we change, we set search option
+        // component enters updating state
+        setSearchOption({type: type, keyword: keyword});
+    }
+
+
+    const showPost = (type) => {
+        console.log(type);
+        setActiveTab(type);
+        setTimeout(setSearchOption({type: SEARCH_KEY.all, keyword: ""}), 3000);
+    }
+
+
+    const operations = <CreatePostButton onShowPost={showPost}>Upload</CreatePostButton>;
+
     return (
         <div className='home'>
-            <SearchBar/>
+            <SearchBar handleSearch={handleSearch}/>
             <div className='display'>
-                <Tabs defaultActiveKey="image" onChange={key => setActiveTab(key)}>
+                <Tabs tabBarExtraContent={operations}
+                      defaultActiveKey="image"
+                      activeKey={activeTab}
+                      onChange={key => setActiveTab(key)}
+                >
                     <TabPane tab="Image" key="image">
                         {
                             renderPost('image')
